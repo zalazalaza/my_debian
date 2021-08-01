@@ -6,9 +6,10 @@ Config {
                           "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
                         ,  "xft:Mononoki Nerd Font:pixelsize=14"
                         ]
-   , bgColor =      "#000000"
+--   , bgColor =      "#282c34"
+   , bgColor =      "#000f0f" 
    , fgColor =      "#779ecb"
-   , position =     Static { xpos = 4, ypos = 2 , width = 1357, height = 22 }
+   , position =     Static { xpos = 8, ypos = 4 , width = 1353, height = 22 }
    , borderColor =  "#646464"
 
    -- layout
@@ -41,7 +42,7 @@ Config {
    , commands = 
 
         -- weather monitor
-        [ Run Weather "KGON" [ "--template", "<skyCondition> | <fc=cyan><tempF></fc>°F | <fc=cyan><rh></fc>%"
+        [ Run Weather "KGON" [ "--template", "<skyCondition> | <fc=white><tempF></fc>°F | <fc=white><rh></fc>%"
                              ] 36000
         , Run UnsafeStdinReader
 
@@ -49,7 +50,7 @@ Config {
         , Run DynNetwork     [ "--template" , "<fn=1>\xf1eb </fn> <tx>kB/s|<rx>kB/s"
                              , "--Low"      , "1000"       -- units: B/s
                              , "--High"     , "5000"       -- units: B/s
-                             , "--low"      , "cyan"
+                             , "--low"      , "white"
                              , "--normal"   , "darkorange"
                              , "--high"     , "darkred"
                              ] 10
@@ -59,7 +60,7 @@ Config {
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
                              , "--low"      , "gray"
-                             , "--normal"   , "cyan"
+                             , "--normal"   , "white"
                              , "--high"     , "darkred"
                              ] 10
 
@@ -67,8 +68,8 @@ Config {
         , Run CoreTemp       [ "--template" , "<fn=1>\xf2c7 </fn> <core0>°C|<core1>°C"
                              , "--Low"      , "70"        -- units: °C
                              , "--High"     , "80"        -- units: °C
-                             , "--low"      , "cyan"
-                             , "--normal"   , "cyan"
+                             , "--low"      , "grey"
+                             , "--normal"   , "white"
                              , "--high"     , "darkred"
                              ] 50
                           
@@ -76,8 +77,8 @@ Config {
         , Run Memory         [ "--template" ,"<fn=1>\xf0c7 </fn>  <usedratio>%"
                              , "--Low"      , "20"        -- units: %
                              , "--High"     , "90"        -- units: %
-                             , "--low"      , "cyan"
-                             , "--normal"   , "cyan"
+                             , "--low"      , "grey"
+                             , "--normal"   , "white"
                              , "--high"     , "darkred"
                              ] 10
 
@@ -86,21 +87,21 @@ Config {
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
                              , "--low"      , "darkred"
-                             , "--normal"   , "cyan"
-                             , "--high"     , "cyan"
+                             , "--normal"   , "grey"
+                             , "--high"     , "white"
 
                              , "--" -- battery specific options
                                        -- discharging status
                                        , "-o" , "<left>% "
                                        -- AC "on" status
-                                       , "-O" , "<fc=cyan>Charging</fc>"
+                                       , "-O" , "<fc=white>Charging</fc>"
                                        -- charged status
                                        , "-i" , "<fc=#006000>Charged</fc>"
                              ] 50
 
         -- time and date indicator 
         --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fn=2>\xf293  \xf028  \xf502 </fn>|<fc=#779ecb> %I:%M </fc>" "date" 10
+        , Run Date           "<fn=2>\xe215  \xf293  \xf028  \xf502 </fn>|<fc=#779ecb> %I:%M </fc>" "date" 10
 
         -- keyboard layout indicator
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")

@@ -79,7 +79,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
     [ ((modm,               xK_Return), spawn $ XMonad.terminal conf)
-    
+
+    -- launch libreoffice
+    , ((modm,               xK_z     ), spawn "libreoffice")
+
     --launch secondary terminal "st"
     , ((modm .|. shiftMask, xK_Return), spawn "st")
     
@@ -102,7 +105,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_s     ), spawn "signal-desktop")
     
     --take screenshot
-    , ((modm .|. shiftMask, xK_s      ), spawn "scrot /home/zalazalaza/Pictures/new_scrot.png")
+    , ((modm .|. shiftMask, xK_s     ), spawn "scrot /home/zalazalaza/Pictures/new_scrot.png")
+
+    --take screenshot with selection
+    ,((modm .|. shiftMask,  xK_z     ), spawn "scrot -s") 
     
     --launch telegram
     , ((modm,               xK_d     ), spawn "telegram-desktop")
@@ -297,8 +303,8 @@ myEventHook = mempty
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
 myLogHook h = dynamicLogWithPP $ xmobarPP
-                  { ppTitle = xmobarColor "cyan" "" . shorten 60
-                  , ppCurrent = xmobarColor "cyan" "" . wrap "[" "]"
+                  { ppTitle = xmobarColor "white" "" . shorten 60
+                  , ppCurrent = xmobarColor "white" "" . wrap "[" "]"
                   , ppOutput = hPutStrLn h 
                   --, ppLayout = id
                   , ppLayout = (\l -> case l of
