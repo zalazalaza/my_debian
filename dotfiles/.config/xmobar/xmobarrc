@@ -6,9 +6,10 @@ Config {
                           "xft:Mononoki Nerd Font:pixelsize=11:antialias=true:hinting=true"
                         ,  "xft:Mononoki Nerd Font:pixelsize=14"
                         ]
---   , bgColor =      "#282c34"
-   , bgColor =      "#000f0f" 
-   , fgColor =      "#779ecb"
+   , bgColor =      "#282c34"
+--   , bgColor =      "#000f0f" 
+--   , fgColor =      "#779ecb"
+   , fgColor = "#ffffff"
    , position =     Static { xpos = 8, ypos = 4 , width = 1353, height = 22 }
    , borderColor =  "#646464"
 
@@ -59,7 +60,7 @@ Config {
         , Run MultiCpu       [ "--template" , "<fn=1>\xf109 </fn> <total0>%|<total1>%"
                              , "--Low"      , "50"         -- units: %
                              , "--High"     , "85"         -- units: %
-                             , "--low"      , "gray"
+                             , "--low"      , "white"
                              , "--normal"   , "white"
                              , "--high"     , "darkred"
                              ] 10
@@ -68,7 +69,7 @@ Config {
         , Run CoreTemp       [ "--template" , "<fn=1>\xf2c7 </fn> <core0>°C|<core1>°C"
                              , "--Low"      , "70"        -- units: °C
                              , "--High"     , "80"        -- units: °C
-                             , "--low"      , "grey"
+                             , "--low"      , "white"
                              , "--normal"   , "white"
                              , "--high"     , "darkred"
                              ] 50
@@ -77,7 +78,7 @@ Config {
         , Run Memory         [ "--template" ,"<fn=1>\xf0c7 </fn>  <usedratio>%"
                              , "--Low"      , "20"        -- units: %
                              , "--High"     , "90"        -- units: %
-                             , "--low"      , "grey"
+                             , "--low"      , "white"
                              , "--normal"   , "white"
                              , "--high"     , "darkred"
                              ] 10
@@ -87,7 +88,7 @@ Config {
                              , "--Low"      , "10"        -- units: %
                              , "--High"     , "80"        -- units: %
                              , "--low"      , "darkred"
-                             , "--normal"   , "grey"
+                             , "--normal"   , "white"
                              , "--high"     , "white"
 
                              , "--" -- battery specific options
@@ -96,12 +97,12 @@ Config {
                                        -- AC "on" status
                                        , "-O" , "<fc=white>Charging</fc>"
                                        -- charged status
-                                       , "-i" , "<fc=#006000>Charged</fc>"
+                                       , "-i" , "<fc=white>Charged</fc>"
                              ] 50
 
         -- time and date indicator 
         --   (%F = y-m-d date, %a = day of week, %T = h:m:s time)
-        , Run Date           "<fn=2>\xe215  \xf293  \xf028  \xf502 </fn>|<fc=#779ecb> %I:%M </fc>" "date" 10
+        , Run Date           "<fn=2>\xe215  \xf293  \xf028  \xf502 </fn>|<fc=#ffffff> %I:%M </fc>" "date" 10
 
         -- keyboard layout indicator
         , Run Kbd            [ ("us(dvorak)" , "<fc=#00008B>DV</fc>")

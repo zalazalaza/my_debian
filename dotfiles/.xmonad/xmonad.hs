@@ -8,17 +8,31 @@
 --
 
 import XMonad
+
+--Data
+
 import Data.Ratio
 import Data.Monoid
+import Data.Maybe (fromJust, isJust)
+
+--
+
 import System.Exit
 import XMonad.Util.Scratchpad
 import XMonad.Util.SpawnOnce
 import XMonad.Util.Run
+
+--Hooks
+
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers (doCenterFloat, isFullscreen, doFullFloat)
 import XMonad.Hooks.DynamicLog (dynamicLogWithPP, wrap, xmobarPP, xmobarColor, shorten, PP(..))
+
+--Actions 
+import XMonad.Actions.CycleWS
 import XMonad.Actions.FloatSnap
 import XMonad.Actions.FloatKeys
+
 
 --Layouts
 import XMonad.Layout.SimplestFloat
@@ -66,11 +80,20 @@ myModMask       = mod4Mask
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
 myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..]
+
+      --scratchpad workspace
+        where nonNSP = WSIs (return (\ws -> W.tag ws /= "NSP"))
+              nonEmptyNonNSP = WSIs (return (\ws -> isJust (W.stack ws) && W.tag ws /= "NSP"))
+
+clickable :: String -> String
+clickable s = "<action=xdotool key super+" ++ show i ++ ">" ++ s ++ "</action>"
+                where i = fromJust $ M.lookup s myWorkspaceIndices
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#ff0000"
+myNormalBorderColor  = "#555555"
+myFocusedBorderColor = "#555555"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -84,7 +107,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_z     ), spawn "libreoffice")
 
     --launch secondary terminal "st"
-    , ((modm .|. shiftMask, xK_Return), spawn "st")
+    , ((modm .|. shiftMask, xK_Return), spawn "st bash")
     
     --launch amfora gemini browser
     , ((modm,               xK_g     ), spawn "kitty amfora")
@@ -95,6 +118,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     --launch newsboat
     , ((modm,               xK_r     ), spawn "kitty newsboat")
 
+    , ((modm .|. shiftMask, xK_r     ), spawn "kitty ranger") 
+
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "dmenu_run")
 
@@ -103,6 +128,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     --launch signal
     , ((modm,               xK_s     ), spawn "signal-desktop")
+
+    --launch steam
+    , ((modm .|. shiftMask, xK_g     ), spawn "steam")
     
     --take screenshot
     , ((modm .|. shiftMask, xK_s     ), spawn "scrot /home/zalazalaza/Pictures/new_scrot.png")
@@ -177,8 +205,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_Up),     withFocused $ snapShrink D Nothing)
     , ((modm .|. shiftMask, xK_Down),   withFocused $ snapGrow D Nothing)
 
-    -- toggle flaot with keys
+    -- toggle float and resize with keys
     , ((modm .|. shiftMask, xK_a),      withFocused $ keysResizeWindow (-50,-20) (1/2,1/2))
+
+    , ((modm .|. shiftMask, xK_x),      withFocused $ keysResizeWindow (50, 20) (1/2,1/2))
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
@@ -243,17 +273,27 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 --
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
+
+
+--old Layout with lots of options
+
+myLayout = spacing 6 (avoidStruts(tiled ||| Full ||| magnifier (Tall 1 (3/100) (1/2)) ))
+
+--OLD LAYOUT
+
+--myLayout = spacing 6 (avoidStruts(tiled ||| Full ||| magnifier (Tall 1 (3/100) (1/2)) ||| spiral (6/7) ||| Mirror tiled ||| simpletabbed ||| grid ||| floats))
 --
-myLayout = spacing 6 (avoidStruts(tiled ||| Full ||| magnifier (Tall 1 (3/100) (1/2)) ||| spiral (6/7) ||| Mirror tiled ||| simpletabbed ||| grid ||| floats))
+--END OF OLD LAYOUT
+
   where
     -- default tiling algorithm partitions the screen into two panes
-     floats = simplestFloat
+    --  floats = simplestFloat
     
      tiled   = Tall nmaster delta ratio
     
-     grid = Grid
+     -- grid = Grid
 
-     simpletabbed = simpleTabbed
+     -- simpletabbed = simpleTabbed
 
      -- The default number of windows in the master pane
      nmaster = 1
@@ -303,11 +343,13 @@ myEventHook = mempty
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
 myLogHook h = dynamicLogWithPP $ xmobarPP
-                  { ppTitle = xmobarColor "white" "" . shorten 60
-                  , ppCurrent = xmobarColor "white" "" . wrap "[" "]"
-                  , ppOutput = hPutStrLn h 
+                  { ppTitle   = xmobarColor "white" "" . shorten 12
+                  , ppCurrent = xmobarColor "white" "" . wrap "[" "]" 
+                  , ppHidden  = xmobarColor "#979898" "" 
+                  , ppHiddenNoWindows = xmobarColor "#555555"  ""
+                  , ppOutput  = hPutStrLn h 
                   --, ppLayout = id
-                  , ppLayout = (\l -> case l of
+                  , ppLayout  = (\l -> case l of
                       "Spacing Tall"                  -> "[|]"
                       "Spacing Mirror Tall"           -> "[=]"
                       "Spacing Full"                  -> "[ ]"
@@ -329,8 +371,9 @@ myLogHook h = dynamicLogWithPP $ xmobarPP
 --
 -- By default, do nothing.
 myStartupHook = do
-        spawnOnce "nitrogen --restore &"
-        spawnOnce "picom &"
+        spawnOnce "picom --experimental-backend &"
+        spawnOnce "nitrogen --restore"
+        --spawnOnce "picom &"
         spawnOnce "stalonetray &"
         spawnOnce "pasystray &"
         spawnOnce "nm-applet &"
