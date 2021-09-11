@@ -4,10 +4,10 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 set number
-syntax on
 set hlsearch
 set incsearch
 set statusline=%f
+syntax on
 nmap <F1> :NERDTreeToggle<CR>
 
 func! WordProcessor()
