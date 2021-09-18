@@ -343,9 +343,9 @@ myEventHook = mempty
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
 myLogHook h = dynamicLogWithPP $ xmobarPP
-                  { ppTitle   = xmobarColor "white" "" . shorten 12
-                  , ppCurrent = xmobarColor "white" "" . wrap "[" "]" 
-                  , ppHidden  = xmobarColor "#979898" "" 
+                  { ppTitle   = xmobarColor "#5f9ef3" "" . shorten 12
+                  , ppCurrent = xmobarColor "#de1fda" "" . wrap "[" "]" 
+                  , ppHidden  = xmobarColor "#5f9ef3" "" 
                   , ppHiddenNoWindows = xmobarColor "#555555"  ""
                   , ppOutput  = hPutStrLn h 
                   --, ppLayout = id
@@ -372,6 +372,7 @@ myLogHook h = dynamicLogWithPP $ xmobarPP
 -- By default, do nothing.
 myStartupHook = do
         spawnOnce "picom --experimental-backend &"
+        --spawnOnce "wal -i /home/zalazalaza/Pictures/wallpaper/wallpaper.jpg &"
         spawnOnce "nitrogen --restore"
         --spawnOnce "picom &"
         spawnOnce "stalonetray &"
