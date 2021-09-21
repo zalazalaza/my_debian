@@ -8,8 +8,17 @@ def main():
 	xmobarrc_filepath = (home + "/.config/xmobar/xmobarrc")
 	kitty_filepath = (home + "/.config/kitty/kitty.conf")
 	xmonad_filepath = (home + "/.xmonad/xmonad.hs")
-	json_filepath = (home + "/.cache/wal/schemes/_colors.json")
+	json_filepath = (home + "/.scripts/files/_colors.json")
 	savefile_path = (home + "/.scripts/files/")
+	
+	if os.path.exists(savefile_path + "_xrc"):
+		os.remove(savefile_path + "_xrc")
+	
+	if os.path.exists(savefile_path + "_testmonad"):
+		os.remove(savefile_path + "_testmonad")
+
+	if os.path.exists(savefile_path + "_.conf"):
+		os.remove(savefile_path + "_.conf")
 	
 	if not os.path.exists(savefile_path):
 		os.makedirs(savefile_path)
@@ -17,7 +26,30 @@ def main():
 	replace_kitty_colors(kitty_filepath, json_filepath, savefile_path)
 	replace_xmobar_colors(xmobarrc_filepath, json_filepath, savefile_path)
 	replace_xmonad_colors(xmonad_filepath, json_filepath, savefile_path)
+	replace_config_files(savefile_path, kitty_filepath, xmobarrc_filepath, xmonad_filepath)
+
 	print("Files saved to: " + savefile_path)
+	
+
+def replace_config_files(newfile_path, kitty_path, xmobar_path, xmonad_path):
+	
+	with open(newfile_path + "_.conf", 'r') as kitty:
+		kitty_data = kitty.read()
+	with open(kitty_path, 'w') as old_kitty:
+		old_kitty.write(kitty_data)
+	
+	with open(newfile_path + "_xrc", 'r') as xmobar:
+		xmobar_data = xmobar.read()
+	with open(xmobar_path, 'w') as old_xmobar:
+		old_xmobar.write(xmobar_data)
+	
+	with open(newfile_path + "_testmonad.hs", 'r') as xmonad:
+		xmonad_data = xmonad.read()
+	with open(xmonad_path, 'w') as old_xmonad:
+		old_xmonad.write(xmonad_data)
+	
+
+
 
 def replace_kitty_colors(file1, file2, new_filepath):
 	kitty_file = open(new_filepath + "_.conf", 'w+')
