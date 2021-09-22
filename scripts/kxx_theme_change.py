@@ -14,8 +14,8 @@ def main():
 	if os.path.exists(savefile_path + "_xrc"):
 		os.remove(savefile_path + "_xrc")
 	
-	if os.path.exists(savefile_path + "_testmonad"):
-		os.remove(savefile_path + "_testmonad")
+	if os.path.exists(savefile_path + "_testmonad.hs"):
+		os.remove(savefile_path + "_testmonad.hs")
 
 	if os.path.exists(savefile_path + "_.conf"):
 		os.remove(savefile_path + "_.conf")
